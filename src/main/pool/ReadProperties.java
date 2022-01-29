@@ -10,7 +10,7 @@ import java.util.Properties;
  * 该类用于将配置文件信息读取在缓存中
  */
 public class ReadProperties {
-
+    private static final String filePath="configure.properties";
     //读取配置文件并保存在缓存里
     private static Properties ptiesroper = new Properties();//本质为map集合
 
@@ -18,7 +18,7 @@ public class ReadProperties {
 
     static {
         try {
-            InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("configure.properties");
+            InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(filePath);
             ptiesroper.load(is);
             Enumeration keyName = ptiesroper.propertyNames();
             // 判断是否有下一个元素
