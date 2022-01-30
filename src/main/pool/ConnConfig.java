@@ -5,8 +5,8 @@ public class ConnConfig {
     private static String url = (String) ReadProperties.getValues("url");
     private static String userName = (String) ReadProperties.getValues("userName");
     private static String password = (String) ReadProperties.getValues("password");
-    private static String maxConn = (String) ReadProperties.getValues("maxConn");
-    private static String maxLeisure = (String) ReadProperties.getValues("maxLeisure");
+    private static Integer maxConn = (Integer) ReadProperties.getValues("maxConn");
+    private static Integer maxLeisure = (Integer) ReadProperties.getValues("maxLeisure");
 
 
     public String getForName() {
@@ -25,11 +25,11 @@ public class ConnConfig {
         return password;
     }
 
-    public String getMaxConn() {
+    public Integer getMaxConn() {
         return maxConn;
     }
 
-    public String getMaxLeisure() {
+    public Integer getMaxLeisure() {
         return maxLeisure;
     }
 }

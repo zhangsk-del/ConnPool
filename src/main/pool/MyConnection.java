@@ -1,13 +1,14 @@
 package pool;
 
 
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class MyConnection {
-    // 这里读取配置文件信息
+public class MyConnection extends AbstConnection {
 
-    private ConnConfig conn;
+    // 这里读取配置文件信息
+    private Connection conn;
     private static ConnConfig cfg = new ConnConfig();
 
     // 加载驱动，并执行一次
@@ -22,7 +23,7 @@ public class MyConnection {
     // 获取链接对象
     {
         try {
-            conn = (ConnConfig) DriverManager.getConnection(cfg.getUrl(), cfg.getUserName(), cfg.getPassword());
+            conn = DriverManager.getConnection(cfg.getUrl(), cfg.getUserName(), cfg.getPassword());
         } catch (SQLException e) {
             e.printStackTrace();
         }
