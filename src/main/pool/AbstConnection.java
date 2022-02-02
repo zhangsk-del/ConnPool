@@ -6,13 +6,12 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 
 public abstract class AbstConnection implements Connection {
-    public Statement createStatement() throws SQLException {
-        return null;
-    }
 
-    public PreparedStatement prepareStatement(String sql) throws SQLException {
-        return null;
-    }
+    public abstract Statement createStatement() throws SQLException;
+
+    public abstract PreparedStatement prepareStatement(String sql) throws SQLException;
+
+    public abstract void close() throws SQLException;
 
     public CallableStatement prepareCall(String sql) throws SQLException {
         return null;
@@ -38,9 +37,6 @@ public abstract class AbstConnection implements Connection {
 
     }
 
-    public void close() throws SQLException {
-
-    }
 
     public boolean isClosed() throws SQLException {
         return false;
