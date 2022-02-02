@@ -2,21 +2,26 @@ package pool;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 
 
-/*
-    管理好多连接
+/**
+ * 管理好多连接
  */
+
 public class ConnectionPool {
 
+
+    private ReentrantLock lock = new ReentrantLock();
+
     // 这里存储连接对象
-    private static ArrayList<Connection> conn = new ArrayList();
+    private static ArrayList<Connection> connList = new ArrayList();
 
     private static ConnConfig cfg = new ConnConfig();
 
     static {
         for (int i = 0; i < cfg.getMaxConn(); i++) {
-            conn.add(new MyConnection());
+            connList.add(new MyConnection());
         }
     }
 
@@ -40,10 +45,36 @@ public class ConnectionPool {
 
     }
 
+    /**
+     * 获取一个连接
+     *
+     * @return 连接对象
+     */
+    private Connection getConn() {
+        Connection connection = null;
+        for (int i = 0; i < connList.size(); i++) {
+            MyConnection conn = (MyConnection) connList.get(i);
+            // 尝试获取锁，获取不到则不等待
+            try {
+                // 锁定当前线程池的对象
+                lock.lock();
+                if (conn.isTem() == false) {
+                    // 将链接占为即有
+                    conn.setTem(true);
+                    connection = conn;
+                    break;
+                }
+            } finally {
+                // 释放锁
+                lock.unlock();
+            }
+        }
+        return connection;
+    }
+
     // 提供对外的方法
     public Connection getConnection() {
-
-        return null;
+        return getConn();
     }
 
 }
