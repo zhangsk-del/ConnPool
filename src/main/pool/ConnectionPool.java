@@ -11,6 +11,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class ConnectionPool {
 
+    // 获取连接的等待时间 50*100 ms
+    private final int waitTime = 50;
 
     private ReentrantLock lock = new ReentrantLock();
 
@@ -74,7 +76,20 @@ public class ConnectionPool {
 
     // 提供对外的方法
     public Connection getConnection() {
-        return getConn();
+        Connection conn = getConn();
+        int size = 0;
+        while (conn == null && size < waitTime) {
+            conn = getConn();
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            size++;
+        }
+        if (conn == null) {
+            throw new RuntimeException("no connection is currently available");
+        }
+        return conn;
     }
-
 }
